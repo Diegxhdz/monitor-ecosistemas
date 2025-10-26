@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EspecieService {
+    @Autowired
     private final EspecieRepo especieRepo;
 
-    @Autowired
     public EspecieService(EspecieRepo especieRepo) {
         this.especieRepo = especieRepo;
     }
@@ -26,8 +26,8 @@ public class EspecieService {
         return especieRepo.findAll().stream().filter(e -> e.getHabitat().equalsIgnoreCase(habitat)).toList();
     }
 
-    public List<Especie> getEspeciesByGrupoBiologico(String grupoBiologico){
-        return especieRepo.findAll().stream().filter(e -> e.getGrupoBiologico().equalsIgnoreCase(grupoBiologico)).toList();
+    public List<Especie> getEspeciesByGrupoBiologico(String grupo_biologico){
+        return especieRepo.findAll().stream().filter(e -> e.getGrupoBiologico().equalsIgnoreCase(grupo_biologico)).toList();
     }
 
     public Especie addEspecie (Especie especie) {
@@ -35,7 +35,4 @@ public class EspecieService {
         return especie;
     }
 
-    /*public Especie updateEspecie(Especie especie){
-        Option
-    }*/
 }

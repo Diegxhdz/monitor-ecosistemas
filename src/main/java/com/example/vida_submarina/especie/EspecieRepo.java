@@ -5,5 +5,5 @@ public interface EspecieRepo extends JpaRepository<Especie, Integer> {
     Especie findByNombre(String nombre);
     Especie findByNombreCientifico(String nombreCientifico);
     Especie findByHabitat(String habitat);
-    Especie findByGrupoBiologico(String grupoBiologico);
+    Especie findByGrupoBiologico(String grupo_biologico);
 }

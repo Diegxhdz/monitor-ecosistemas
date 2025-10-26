@@ -1,90 +1,103 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif; /* Usa una fuente moderna como 'Poppins' o 'Montserrat' */
-}
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+    }
 
-.hero {
-    min-height: 100vh;
-    background-color: #0B2F44; /* Color base oscuro */
-    color: white;
-    /* La imagen de fondo compleja con el buzo y la cueva debe ser gestionada aquí o en un div dentro */
-}
+    /* Encabezado principal */
+    .topbar {
+      background-color: #333;
+      color: white;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.header-overlay {
-    /* Aquí se podría manejar el fondo oscuro y la transparencia */
-    padding: 20px 5%;
-}
+    .topbar h1 {
+      font-size: 26px;
+      margin: 0;
+      font-weight: normal;
+    }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-}
+    .topbar .right {
+      font-size: 14px;
+    }
 
-.logo {
-    font-weight: bold;
-    font-size: 1.2em;
-}
+    /* Barra de navegación secundaria */
+    .nav-secondary {
+      background-color: #0c518d;
+      padding: 10px 30px;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+      display: absolute;
+    }
 
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    margin-left: 30px;
-    font-weight: 500;
-    font-size: 20px;
-}
+    .breadcrumb {
+      background-color: #e3e1e1;
+      padding: 10px 30px;
+      font-size: 20px;
 
-.hero-content {
-    display: flex;
-    align-items: center;
-    min-height: 80vh; /* Ajusta la altura del contenido */
-}
+    }
 
-.text-content {
-    max-width: 450px;
-    margin-right: auto; 
-    z-index: 10; /* Asegura que el texto esté sobre cualquier fondo */
-}
+    .container {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+      background-color: white;
+    }
 
-.campaign-label {
-    font-size: 1.1em;
-    opacity: 0.7;
-}
+    h2 {
+      color: #016e4a;
+      font-size: 28px;
+    }
 
-h1 {
-    font-size: 4.5em; /* Tamaño grande para el título principal */
-    margin: 0;
-    line-height: 1;
-}
+    .highlight {
+      font-weight: bold;
+    }
 
-.subtitle {
-    font-size: 1.5em;
-    font-weight: 300;
-    margin-top: 10px;
-}
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
 
-.btn-read-more {
-    display: inline-block;
-    padding: 10px 30px;
-    border: 2px solid white;
-    background: transparent;
-    color: white;
-    text-decoration: none;
-    margin-top: 25px;
-    border-radius: 5px;
-    font-weight: bold;
-}
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+    }
 
-.social-media {
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-}
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      background-color: #333;
+      color: white;
+      margin-top: 40px;
+    }
 
-.social-icons a {
-    color: white;
-    font-size: 1.2em;
-    margin-left: 15px;
-    opacity: 0.8;
-}
+    /* Estilo para los botones */
+    .btn-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .btn-container a {
+      padding: 12px 24px;
+      background-color: #016e4a;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .btn-container a:hover {
+      background-color: #014d2f;
+    }

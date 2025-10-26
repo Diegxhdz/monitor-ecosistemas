@@ -1,23 +1,33 @@
 package com.example.vida_submarina.especie;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-
+@Entity
+@Table(name = "especies")
 public class Especie {
     @Id
     private int id;
     private String nombre;
     private String nombreCientifico;
     private String habitat;
-    private String grupo_biologico;
+    @Column(name = "grupo_biologico")
+    private String grupoBiologico;
 
-    public Especie(int id, String nombre, String nombreCientifico, String habitat, String grupo_biologico) {
+    public Especie() {
+        // JPA requires a no-arg constructor
+    }
+
+    public Especie(int id, String nombre, String nombreCientifico, String habitat, String grupoBiologico) {
         this.id = id;
         this.nombre = nombre;
         this.nombreCientifico = nombreCientifico;
         this.habitat = habitat;
-        this.grupo_biologico = grupo_biologico;
+        this.grupoBiologico = grupoBiologico;
     }
+
     public String getNombreCientifico() {
         return nombreCientifico;
     }
@@ -27,7 +37,7 @@ public class Especie {
     }
 
     public String getGrupoBiologico() {
-        return grupo_biologico;
+        return grupoBiologico;
     }
 
     public int getId() {
@@ -54,8 +64,8 @@ public class Especie {
         this.habitat = habitat;
     }
 
-    public void setGrupoBiologico(String grupo_biologico) {
-        this.grupo_biologico = grupo_biologico;
+    public void setGrupoBiologico(String grupoBiologico) {
+        this.grupoBiologico = grupoBiologico;
     }
 
 }
