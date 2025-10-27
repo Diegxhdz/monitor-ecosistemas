@@ -10,5 +10,10 @@ public class Controlador {
     public String inicio() {
         return "inicio"; // Retorna la vista inicio.html
     }
+
+    @GetMapping("/")
+    public String propuestas(){
+        return "propuestas";
+    }
     
 }

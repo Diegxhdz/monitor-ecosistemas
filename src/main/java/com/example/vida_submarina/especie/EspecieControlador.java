@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path="/especies")
 public class EspecieControlador {
     
-    private EspecieService especieService;
+    private final EspecieService especieService;
 
     @Autowired
     public EspecieControlador(EspecieService especieService){
