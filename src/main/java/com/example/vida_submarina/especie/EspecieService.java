@@ -22,10 +22,6 @@ public class EspecieService {
         return especieRepo.findAll().stream().filter(e -> e.getNombre().equalsIgnoreCase(nombre)).toList();
     }
 
-    public List<Especie> getEspeciesByHabitat(String habitat){
-        return especieRepo.findAll().stream().filter(e -> e.getHabitat().equalsIgnoreCase(habitat)).toList();
-    }
-
     public List<Especie> getEspeciesByGrupoBiologico(String grupo_biologico){
         return especieRepo.findAll().stream().filter(e -> e.getGrupoBiologico().equalsIgnoreCase(grupo_biologico)).toList();
     }

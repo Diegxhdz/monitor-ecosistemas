@@ -12,29 +12,26 @@ public class Especie {
     private int id;
     private String nombre;
     private String nombreCientifico;
-    private String habitat;
     @Column(name = "grupo_biologico")
     private String grupoBiologico;
+    private String estatus;
 
     public Especie() {
         // JPA requires a no-arg constructor
     }
 
-    public Especie(int id, String nombre, String nombreCientifico, String habitat, String grupoBiologico) {
+    public Especie(int id, String nombre, String nombreCientifico, String habitat, String grupoBiologico, String estatus) {
         this.id = id;
         this.nombre = nombre;
         this.nombreCientifico = nombreCientifico;
-        this.habitat = habitat;
         this.grupoBiologico = grupoBiologico;
+        this.estatus = estatus;
     }
 
     public String getNombreCientifico() {
         return nombreCientifico;
     }
-
-    public String getHabitat() {
-        return habitat;
-    }
+    
 
     public String getGrupoBiologico() {
         return grupoBiologico;
@@ -60,12 +57,16 @@ public class Especie {
         this.nombreCientifico = nombreCientifico;
     }
 
-    public void setHabitat(String habitat) {
-        this.habitat = habitat;
-    }
-
     public void setGrupoBiologico(String grupoBiologico) {
         this.grupoBiologico = grupoBiologico;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
     }
 
 }
