@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitor de Ecosistemas - Nautilus</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Chart.js para las gráficas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="text-gray-800 font-sans">
+
+  <!-- Navbar -->
+  <header class="fixed w-full bg-white shadow z-50">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-2">
+        <a href="inicio.html" class="flex items-center space-x-2">
+          <span class="text-2xl">⚓</span>
+          <span class="text-xl font-semibold text-blue-700">Nautilus</span>
+        </a>
+      </div>
+      <ul class="hidden md:flex space-x-6 text-blue-800 font-medium">
+        <li><a href="inicio.html">Inicio</a></li>
+        <li><a href="monitor.html" class="text-blue-600 font-semibold">Monitor de Ecosistemas</a></li>
+        <li><a href="especies.html">Especies Mexicanas</a></li>
+        <li><a href="agenda.html">Agenda 2030</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <!-- Mission Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-blue-800 mb-6">Monitor de Ecosistemas</h2>
+      <p class="text-gray-600 max-w-3xl mx-auto mb-12">
+        Crear un ecosistema sostenible que conecte a recolectores, recicladores y comunidades en la lucha contra la 
+        contaminación plástica marina a través de la tecnología y la colaboración.
+      </p>
+      
+
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-blue-800 mb-6">Implementación del monitor</h2>
+      <p class="text-gray-600 max-w-3xl mx-auto mb-12">
+      ssss
+      </p>
+      
+
+    </div>
+  </section>
+
+
+
+  <!-- Charts Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Chart 1: Tendencias -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold text-blue-800 mb-4">Tendencias de Recolección</h3>
+          <canvas id="trendChart" class="w-full h-64"></canvas>
+        </div>
+
+        <!-- Chart 2: Por Región -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold text-blue-800 mb-4">Recolección por Región</h3>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <span>Costa del Pacífico</span>
+              <span class="text-blue-600 font-semibold">0 items</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span>Costa del Atlántico</span>
+              <span class="text-blue-600 font-semibold">0 items</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span>Costa del Golfo</span>
+              <span class="text-blue-600 font-semibold">0 items</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- Stats Grid -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Stat Card 1 -->
+        <div class="bg-blue-600 text-white rounded-lg p-6 text-center">
+          <p class="text-4xl font-bold mb-2">0</p>
+          <p class="text-sm uppercase tracking-wider">Toneladas de Plástico Recolectado</p>
+        </div>
+        
+        <!-- Stat Card 2 -->
+        <div class="bg-green-500 text-white rounded-lg p-6 text-center">
+          <p class="text-4xl font-bold mb-2">0</p>
+          <p class="text-sm uppercase tracking-wider">Pescadores & Voluntarios</p>
+        </div>
+        
+        <!-- Stat Card 3 -->
+        <div class="bg-purple-500 text-white rounded-lg p-6 text-center">
+          <p class="text-4xl font-bold mb-2">0</p>
+          <p class="text-sm uppercase tracking-wider">Empresas Asociadas</p>
+        </div>
+        
+        <!-- Stat Card 4 -->
+        <div class="bg-orange-500 text-white rounded-lg p-6 text-center">
+          <p class="text-4xl font-bold mb-2">0</p>
+          <p class="text-sm uppercase tracking-wider">Vida Marina Protegida</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-blue-600">
+    <div class="max-w-4xl mx-auto px-6 text-center text-white">
+      <h2 class="text-3xl font-bold mb-6 text-white">Únete al Monitoreo Activo</h2>
+      <p class="text-xl mb-8">
+        Tu participación es vital para mantener nuestros océanos saludables.
+      </p>
+      <button class="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition">
+        Comenzar Ahora
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-6 text-center text-gray-500 text-sm">
+    © 2025 Nautilus. Comprometidos con los Océanos.
+  </footer>
+
+  <script>
+    // Configuración de la gráfica de tendencias
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Recolección Mensual',
+          data: [0, 0, 0, 0, 0, 0],
+          borderColor: 'rgb(37, 99, 235)',
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
