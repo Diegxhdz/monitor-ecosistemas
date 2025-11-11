@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Monitor de Ecosistemas - Nautilus</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <!-- Chart.js para las gráficas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class="text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
@@ -30,143 +29,159 @@
     </nav>
   </header>
 
+  <main class="pt-24 max-w-7xl mx-auto px-6">
+    <h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">Monitor de Ecosistemas Acuáticos </h2>
 
-  <!-- Mission Section -->
-  <section class="py-16 bg-white">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold text-blue-800 mb-6">Monitor de Ecosistemas</h2>
-      <p class="text-gray-600 max-w-3xl mx-auto mb-12">
-        Crear un ecosistema sostenible que conecte a recolectores, recicladores y comunidades en la lucha contra la 
-        contaminación plástica marina a través de la tecnología y la colaboración.
-      </p>
-      
+    <div class="grid md:grid-cols-3 gap-6">
 
-    </div>
-  </section>
+      <!-- IZQUIERDA -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-700 mb-4">Selección de Zonas y Estado</h3>
 
-  <!-- Mission Section -->
-  <section class="py-16 bg-white">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold text-blue-800 mb-6">Implementación del monitor</h2>
-      <p class="text-gray-600 max-w-3xl mx-auto mb-12">
-      ssss
-      </p>
-      
+        <label for="layer" class="block mb-2 text-sm font-medium text-gray-700">Capa de Datos:</label>
+        <select id="layer" class="w-full mb-4 border border-gray-300 rounded-lg p-2">
+          <option value="" disabled selected>Seleccione una capa</option>
+          <option>Temperatura</option>
+          <option>PH</option>
+          <option>O₂</option>
+          <option>Coral</option>
+        </select>
 
-    </div>
-  </section>
+        <label for="buoy" class="block mb-2 text-sm font-medium text-gray-700">Boya:</label>
+        <select id="buoy" class="w-full border border-gray-300 rounded-lg p-2 mb-6">
+          <option>Boya #045</option>
+          <option>Boya #102</option>
+          <option>Boya #256</option>
+          <option>Boya #399</option>
+        </select>
 
-
-
-  <!-- Charts Section -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Chart 1: Tendencias -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h3 class="text-xl font-semibold text-blue-800 mb-4">Tendencias de Recolección</h3>
-          <canvas id="trendChart" class="w-full h-64"></canvas>
-        </div>
-
-        <!-- Chart 2: Por Región -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h3 class="text-xl font-semibold text-blue-800 mb-4">Recolección por Región</h3>
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <span>Costa del Pacífico</span>
-              <span class="text-blue-600 font-semibold">0 items</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span>Costa del Atlántico</span>
-              <span class="text-blue-600 font-semibold">0 items</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span>Costa del Golfo</span>
-              <span class="text-blue-600 font-semibold">0 items</span>
-            </div>
-          </div>
+        <div class="map-legend">
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">Leyenda</h4>
+          <ul class="space-y-1 text-sm">
+            <li><span class="legend-dot bg-red-500"></span> Crítico</li>
+            <li><span class="legend-dot bg-yellow-400"></span> Riesgo</li>
+            <li><span class="legend-dot bg-orange-400"></span> Advertencia</li>
+            <li><span class="legend-dot bg-green-500"></span> Estable</li>
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
 
+      <!-- CENTRO -->
+      <div class="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center">
+        <p id="placeholder-text" class="text-gray-500 mb-4">Seleccione una capa para visualizar el mapa.</p>
+        <a id="map-link" href="#" target="_blank" style="display:none;">
+          <img id="preview" alt="Mapa de monitoreo" class="mx-auto rounded-lg shadow-lg transition-opacity duration-300 graph-image">
+        </a>
+        <button id="view-map-btn" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg mt-4">Ver mapa completo</button>
+      </div>
 
+      <!-- DERECHA -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 id="buoyTitle" class="text-lg font-semibold text-blue-800 mb-2">Análisis de Boya #045 – Pacífico SUR</h3>
+        <div id="status" class="text-red-600 font-semibold mb-4">Estado: Crítico</div>
 
-
-  <!-- Stats Grid -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Stat Card 1 -->
-        <div class="bg-blue-600 text-white rounded-lg p-6 text-center">
-          <p class="text-4xl font-bold mb-2">0</p>
-          <p class="text-sm uppercase tracking-wider">Toneladas de Plástico Recolectado</p>
-        </div>
-        
-        <!-- Stat Card 2 -->
-        <div class="bg-green-500 text-white rounded-lg p-6 text-center">
-          <p class="text-4xl font-bold mb-2">0</p>
-          <p class="text-sm uppercase tracking-wider">Pescadores & Voluntarios</p>
-        </div>
-        
-        <!-- Stat Card 3 -->
-        <div class="bg-purple-500 text-white rounded-lg p-6 text-center">
-          <p class="text-4xl font-bold mb-2">0</p>
-          <p class="text-sm uppercase tracking-wider">Empresas Asociadas</p>
-        </div>
-        
-        <!-- Stat Card 4 -->
-        <div class="bg-orange-500 text-white rounded-lg p-6 text-center">
-          <p class="text-4xl font-bold mb-2">0</p>
-          <p class="text-sm uppercase tracking-wider">Vida Marina Protegida</p>
-        </div>
+        <div id="cards-container" class="grid grid-cols-2 gap-4 mb-6"></div>
+        <canvas id="statusChart" class="w-full h-64"></canvas>
       </div>
     </div>
-  </section>
+  </main>
 
-
-  <!-- CTA Section -->
-  <section class="py-20 bg-blue-600">
-    <div class="max-w-4xl mx-auto px-6 text-center text-white">
-      <h2 class="text-3xl font-bold mb-6 text-white">Únete al Monitoreo Activo</h2>
-      <p class="text-xl mb-8">
-        Tu participación es vital para mantener nuestros océanos saludables.
-      </p>
-      <button class="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition">
-        Comenzar Ahora
-      </button>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-100 py-6 text-center text-gray-500 text-sm">
+  <footer class="bg-gray-100 py-6 text-center text-gray-500 text-sm mt-10">
     © 2025 Nautilus. Comprometidos con los Océanos.
   </footer>
 
   <script>
-    // Configuración de la gráfica de tendencias
-    const ctx = document.getElementById('trendChart').getContext('2d');
-    new Chart(ctx, {
+    const selectLayer = document.getElementById("layer");
+    const selectBuoy = document.getElementById("buoy");
+    const img = document.getElementById("preview");
+    const mapLink = document.getElementById("map-link");
+    const mapBtn = document.getElementById("view-map-btn");
+    const placeholder = document.getElementById("placeholder-text");
+    const cardsContainer = document.getElementById("cards-container");
+    const status = document.getElementById("status");
+    const buoyTitle = document.getElementById("buoyTitle");
+
+    const capas = {
+      "temperatura": { img: "images/temperaturas.png" },
+      "ph": { img: "images/ph.png" },
+      "o₂": { img: "images/o2.png" },
+      "coral": { img: "images/coral.png" }
+    };
+
+    // Gráfica inicial
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    let chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
         datasets: [{
-          label: 'Recolección Mensual',
-          data: [0, 0, 0, 0, 0, 0],
-          borderColor: 'rgb(37, 99, 235)',
-          tension: 0.1
+          label: 'Estado ambiental',
+          data: Array.from({length: 7}, () => Math.random() * 100),
+          borderColor: '#e74c3c',
+          backgroundColor: 'rgba(231,76,60,0.2)',
+          borderWidth: 3,
+          tension: 0.3
         }]
       },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
+      options: { scales: { y: { beginAtZero: true, max: 100 } } }
+    });
+
+    function updateCards() {
+      const random = () => (Math.random() * 10 + 20).toFixed(1);
+      const ph = (Math.random() * 1 + 7).toFixed(2);
+      const ox = (Math.random() * 4 + 4).toFixed(1);
+      const desviacion = (Math.random() * 3).toFixed(1);
+
+      cardsContainer.innerHTML = `
+        <div class="data-card"><h4>Temperatura</h4><h2>${random()}°C</h2></div>
+        <div class="data-card"><h4>Desviación</h4><h2>+${desviacion}°C</h2></div>
+        <div class="data-card"><h4>PH</h4><h2>${ph}</h2></div>
+        <div class="data-card"><h4>Oxígeno</h4><h2>${ox} mg/L</h2></div>
+      `;
+    }
+
+    function resetChartCritical() {
+      chart.data.datasets[0].borderColor = '#e74c3c';
+      chart.data.datasets[0].backgroundColor = 'rgba(231,76,60,0.2)';
+      chart.data.datasets[0].data = Array.from({length: 7}, () => Math.random() * 50);
+      chart.update();
+    }
+
+    selectLayer.addEventListener("change", () => {
+      const layer = selectLayer.value.toLowerCase();
+      const def = selectLayer.querySelector('option[value=""]');
+      if (def) def.remove();
+
+      if (capas[layer]) {
+        img.style.opacity = 0;
+        setTimeout(() => {
+          img.src = capas[layer].img;
+          img.style.opacity = 1;
+        }, 300);
+        mapLink.href = capas[layer].img;
+        mapLink.style.display = "inline";
+        mapBtn.classList.remove("hidden");
+        placeholder.style.display = "none";
+        mapBtn.onclick = () => window.open(capas[layer].img, "_blank");
+
+        updateCards();
+        resetChartCritical();
+        status.textContent = "Estado: Crítico";
+        status.style.color = "#e74c3c";
       }
     });
-  </script>
 
+    selectBuoy.addEventListener("change", () => {
+      const buoy = selectBuoy.value;
+      buoyTitle.textContent = `Análisis de ${buoy} – Pacífico SUR`;
+      updateCards();
+      resetChartCritical();
+      status.textContent = "Estado: Crítico";
+      status.style.color = "#e74c3c";
+    });
+
+    // Inicializar tarjetas al cargar
+    updateCards();
+  </script>
 </body>
 </html>
