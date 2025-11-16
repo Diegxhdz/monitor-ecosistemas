@@ -14,21 +14,19 @@
   <!-- Navbar -->
   <header class="fixed w-full bg-white shadow z-50">
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <div class="flex items-center space-x-2">
-        <a href="inicio.html" class="flex items-center space-x-2">
-          <span class="text-2xl">⚓</span>
-          <span class="text-xl font-semibold text-blue-700">Nautilus</span>
-        </a>
-      </div>
+        <div class="logo">
+            <a href="inicio.html">⚓ Nautilus</a>
+        </div>
       <ul class="hidden md:flex space-x-6 text-blue-800 font-medium">
-        <li><a href="inicio.html">Inicio</a></li>
-        <li><a href="monitor.html" class="text-blue-600 font-semibold">Monitor de Ecosistemas</a></li>
-        <li><a href="especies.html">Especies Mexicanas</a></li>
-        <li><a href="agenda.html">Agenda 2030</a></li>
+        <li><a href="inicio.html" class="text-blue-600 font-semibold">Inicio</a></li>
+            <a href="monitor.html">Monitor de Ecosistemas</a> 
+            <a href="especies.html">Especies Mexicanas</a>
+            <a href="agenda.html">Agenda 2030</a>
       </ul>
     </nav>
   </header>
 
+  
   <main class="pt-24 max-w-7xl mx-auto px-6">
     <h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">Monitor de Ecosistemas Acuáticos </h2>
 
@@ -67,7 +65,7 @@
       </div>
 
       <!-- CENTRO -->
-      <div class="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center">
+      <div class="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center min-h-[420px]">
         <p id="placeholder-text" class="text-gray-500 mb-4">Seleccione una capa para visualizar el mapa.</p>
         <a id="map-link" href="#" target="_blank" style="display:none;">
           <img id="preview" alt="Mapa de monitoreo" class="mx-auto rounded-lg shadow-lg transition-opacity duration-300 graph-image">
@@ -162,7 +160,7 @@
         mapLink.style.display = "inline";
         mapBtn.classList.remove("hidden");
         placeholder.style.display = "none";
-        mapBtn.onclick = () => window.open(capas[layer].img, "_blank");
+        mapBtn.onclick = () => window.open("https://simar.conabio.gob.mx/explorer/", "_blank");
 
         updateCards();
         resetChartCritical();
