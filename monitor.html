@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monitor de Ecosistemas Acuáticos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #2c3e50; 
+            color: white; 
+            margin: 0; 
+            padding: 0; 
+        }
+        .navbar-monitor { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background-color: #1a252f; padding: 15px 30px; border-bottom: 3px solid #3498db; 
+        }
+        .navbar-monitor .logo a { text-decoration: none; color: #3498db; font-size: 1.6em; font-weight: bold; }
+        .navbar-monitor .title h2 { margin: 0; font-size: 1.4em; color: white; opacity: 0.9; }
+
+        .main-grid { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 20px; padding: 20px; max-width: 1400px; margin: auto; }
+        .panel { background-color: #34495e; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+
+        /* MAPA */
+        .map-section { grid-column: 1 / 2; }
+        .map-controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .map-controls select { padding: 8px; border-radius: 4px; background-color: #4a637c; color: white; border: 1px solid #3498db; }
+        .map-container { text-align: center; background-color: #2c3e50; padding: 20px; border-radius: 5px; }
+        .map-legend ul { list-style: none; padding: 0; text-align: left; }
+        .map-legend li { margin: 5px 0; display: flex; align-items: center; font-size: 0.9em; }
+        .map-legend span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        .map-legend .stable { background-color: #2ecc71; }
+        .map-legend .warning { background-color: #f1c40f; }
+        .map-legend .risk { background-color: #e67e22; }
+        .map-legend .critical { background-color: #e74c3c; }
+
+        /* ACCIONES */
+        .action-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .action-buttons button { background-color: #4a637c; color: white; border: none; padding: 15px 10px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: background-color 0.2s, transform 0.1s; }
+        .action-buttons button:hover { background-color: #3498db; }
+        .action-buttons button.selected { background-color: #2ecc71; transform: scale(1.05); }
+
+        .activate-btn { background-color: #e74c3c; padding: 20px; margin-top: 30px; font-weight: bold; font-size: 1.2em; width: 100%; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s; }
+        .activate-btn:hover { background-color: #c0392b; }
+
+        .simulation-btn { grid-column: span 2; background-color: #2980b9 !important; }
+        .simulation-btn:hover { background-color: #2471a3 !important; }
+
+        /* IMAGEN CENTRAL */
+        .graph-placeholder { background-color: #2c3e50; border-radius: 5px; margin-bottom: 15px; text-align: center; padding: 10px; }
+        .graph-image { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); transition: opacity 0.4s ease; }
+
+        .view-map-btn { margin-top: 10px; background-color: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background-color 0.2s, transform 0.1s; display: block; margin-left: auto; margin-right: auto; }
+        .view-map-btn:hover { background-color: #2980b9; }
+
+        /* ANÁLISIS */
+        .analysis-section { grid-column: 3 / 4; }
+        .analysis-data { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .data-card { background-color: #2980b9; padding: 10px; border-radius: 8px; text-align: center; }
+        .data-card h4 { margin: 0 0 5px 0; font-size: 0.85em; opacity: 0.8; }
+        .data-card h2 { margin: 0; font-size: 1.2em; }
+
+        canvas { background-color: #2c3e50; border-radius: 5px; margin-top: 15px; }
+
+        /* BARRA DE ESTABILIDAD CON BORDE */
+        .stability-container {
+            border: 2px solid white;
+            border-radius: 5px;
+            height: 22px;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .stability-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #e74c3c;
+            transition: width 3s ease, background-color 0.4s;
+        }
+
+        /* pequeño ajuste para que las 4 cards entren mejor */
+        @media (min-width: 900px) {
+            .analysis-data { gap: 8px; }
+            .data-card { padding: 8px; }
+            .data-card h2 { font-size: 1.05em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar-monitor">
+        <div class="logo"><a href="index.html">⚓ Nautilus</a></div>
+        <div class="title"><h2>Monitor de Ecosistemas Acuáticos 💧</h2></div>
+        <div class="header-actions"><a href="auth.html" style="color: white; text-decoration: none; font-weight: 600;">Iniciar Sesión</a></div>
+    </div>
+    
+    <div class="main-grid">
+
+        <!-- IZQUIERDA -->
+        <div class="panel map-section">
+            <h3>Selección de Zonas y Estado</h3>
+            <div class="map-controls">
+                <label for="layer">Capa de Datos:</label>
+                <select id="layer">
+                    <option value="" disabled selected>Seleccione una capa</option>
+                    <option>Temperatura</option>
+                    <option>PH</option>
+                    <option>O₂</option>
+                    <option>Coral</option>
+                </select>
+
+                <label for="buoy">Boya:</label>
+                <select id="buoy">
+                    <option>Boya #045</option>
+                    <option>Boya #102</option>
+                    <option>Boya #256</option>
+                    <option>Boya #399</option>
+                </select>
+            </div>
+
+            <div class="map-container">
+                <p>Seleccione un punto en el mapa para análisis detallado.</p>
+                <div class="map-legend">
+                    <ul>
+                        <li><span class="critical"></span>Crítico</li>
+                        <li><span class="risk"></span>Riesgo</li>
+                        <li><span class="warning"></span>Advertencia</li>
+                        <li><span class="stable"></span>Estable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTRO -->
+        <div class="panel actions-section">
+            <h3>Acciones y Reducción de Contaminación</h3>
+            <div class="graph-placeholder">
+                <p id="placeholder-text">Selecciona una capa para visualizar el mapa.</p>
+                <a id="map-link" href="#" target="_blank" style="display:none;">
+                    <img id="preview" alt="Gráfico de monitoreo" class="graph-image">
+                </a>
+                <button id="view-map-btn" class="view-map-btn" style="display:none;">Ver mapa completo</button>
+            </div>
+
+            <div class="action-buttons" id="action-buttons">
+                <button class="sim-btn">Cierre de pesca</button>
+                <button class="sim-btn">Asignar Submarino</button>
+                <button class="sim-btn">Inspección</button>
+                <button class="sim-btn">Contactar Buques</button>
+                <button class="sim-btn">Evacuación</button>
+                <button class="sim-btn">Mallas de Sombra</button>
+                <!-- BOTÓN SIMULAR AGREGADO -->
+                <button id="simulate" class="simulation-btn">Simular Acciones</button>
+            </div>
+            
+            <button class="activate-btn" id="activate">ACTIVAR PROTOCOLO CRÍTICO</button>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="panel analysis-section">
+            <h3 id="buoyTitle">Análisis de Boya #045 – Pacífico SUR</h3>
+            <div id="status" style="font-size:1.2em; color:#e74c3c; margin-bottom:10px;">Estado: Crítico</div>
+
+            <div class="analysis-data" id="cards-container"></div>
+
+            <canvas id="statusChart" width="400" height="200"></canvas>
+            <div style="width:100%; text-align:center; margin-top:10px;">
+                <h4>Barra de Estabilidad</h4>
+                <div class="stability-container">
+                    <div class="stability-bar" id="stabilityBar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const selectLayer = document.getElementById("layer");
+        const selectBuoy = document.getElementById("buoy");
+        const img = document.getElementById("preview");
+        const mapLink = document.getElementById("map-link");
+        const mapBtn = document.getElementById("view-map-btn");
+        const placeholder = document.getElementById("placeholder-text");
+        const cardsContainer = document.getElementById("cards-container");
+        const simButtons = document.querySelectorAll(".sim-btn");
+        const simulateBtn = document.getElementById("simulate");
+        const activateBtn = document.getElementById("activate");
+        const bar = document.getElementById("stabilityBar");
+        const status = document.getElementById("status");
+        const buoyTitle = document.getElementById("buoyTitle");
+
+        const capas = {
+            "temperatura": { img: "images/temperaturas.png" },
+            "ph": { img: "images/ph.png" },
+            "o₂": { img: "images/o2.png" },
+            "coral": { img: "images/coral.png" }
+        };
+
+        // Inicializa gráfica
+        const ctx = document.getElementById('statusChart').getContext('2d');
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Estado ambiental',
+                    data: Array.from({length: 7}, () => Math.random() * 100),
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231,76,60,0.2)',
+                    borderWidth: 3,
+                    tension: 0.3
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true, max: 100 } } }
+        });
+
+        function updateCards() {
+            const random = () => (Math.random() * 10 + 20).toFixed(1);
+            const ph = (Math.random() * 1 + 7).toFixed(2);
+            const ox = (Math.random() * 4 + 4).toFixed(1);
+            const desviacion = (Math.random() * 3).toFixed(1);
+
+            cardsContainer.innerHTML = `
+                <div class="data-card"><h4>Temperatura actual</h4><h2>${random()}° C</h2></div>
+                <div class="data-card"><h4>Desviación</h4><h2>+${desviacion}° C</h2></div>
+                <div class="data-card"><h4>PH</h4><h2>${ph}</h2></div>
+                <div class="data-card"><h4>Oxígeno</h4><h2>${ox} mg/L</h2></div>
+            `;
+        }
+
+        function resetChartCritical() {
+            chart.data.datasets[0].borderColor = '#e74c3c';
+            chart.data.datasets[0].backgroundColor = 'rgba(231,76,60,0.2)';
+            chart.data.datasets[0].data = Array.from({length: 7}, () => Math.random() * 50);
+            chart.update();
+        }
+
+        function stabilizeChart() {
+            chart.data.datasets[0].borderColor = '#2ecc71';
+            chart.data.datasets[0].backgroundColor = 'rgba(46,204,113,0.2)';
+            chart.data.datasets[0].data = [80, 85, 88, 90, 92, 95, 98];
+            chart.update();
+        }
+
+        selectLayer.addEventListener("change", () => {
+            const layer = selectLayer.value.toLowerCase();
+            const def = selectLayer.querySelector('option[value=""]');
+            if (def) def.remove();
+
+            if (capas[layer]) {
+                img.style.opacity = 0;
+                setTimeout(() => {
+                    img.src = capas[layer].img;
+                    img.style.opacity = 1;
+                }, 300);
+                mapLink.href = capas[layer].img;
+                mapLink.style.display = "inline";
+                mapBtn.style.display = "block";
+                placeholder.style.display = "none";
+                mapBtn.onclick = () => window.open(capas[layer].img, "_blank");
+
+                updateCards();
+                resetChartCritical();
+                status.textContent = "Estado: Crítico";
+                status.style.color = "#e74c3c";
+                bar.style.width = "0%";
+                bar.style.backgroundColor = "#e74c3c";
+            }
+        });
+
+        selectBuoy.addEventListener("change", () => {
+            const buoy = selectBuoy.value;
+            buoyTitle.textContent = `Análisis de ${buoy} – Pacífico SUR`;
+            updateCards();
+            resetChartCritical();
+            status.textContent = "Estado: Crítico";
+            status.style.color = "#e74c3c";
+            bar.style.width = "0%";
+            bar.style.backgroundColor = "#e74c3c";
+        });
+
+        // Lógica de botones de acción: se quedan seleccionados (toggle).
+        simButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                btn.classList.toggle("selected");
+                // efecto sobre gráfica: subir valores un poco
+                chart.data.datasets[0].data = chart.data.datasets[0].data.map(y => Math.min(y + (Math.random()*10 + 5), 100));
+                chart.update();
+            });
+        });
+
+        // BOTÓN SIMULAR: no activa barra, solamente mejora la gráfica visualmente
+        simulateBtn.addEventListener("click", () => {
+            // Lleva la gráfica a valores altos (simulación de mejora)
+            chart.data.datasets[0].data = chart.data.datasets[0].data.map(() => Math.random() * 25 + 75); // 75-100
+            chart.data.datasets[0].borderColor = '#2ecc71';
+            chart.data.datasets[0].backgroundColor = 'rgba(46,204,113,0.2)';
+            chart.update();
+            // NOTE: no toca la barra ni el estado textual: el protocolo real lo hace activateBtn
+        });
+
+        // ACTIVAR PROTOCOLO: reinicia gráfica a crítico y la va estabilizando; al final deselecciona botones
+        activateBtn.addEventListener('click', () => {
+            resetChartCritical();
+            let width = 0;
+            bar.style.width = '0%';
+            bar.style.backgroundColor = '#e74c3c';
+            status.textContent = 'Estabilizando...';
+            status.style.color = '#f39c12';
+            const interval = setInterval(() => {
+                width += 2;
+                bar.style.width = width + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                    bar.style.backgroundColor = '#2ecc71';
+                    status.textContent = 'Estado: Estable';
+                    status.style.color = '#2ecc71';
+                    stabilizeChart();
+                    // Deseleccionar automáticamente todos los botones
+                    simButtons.forEach(b => b.classList.remove("selected"));
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
